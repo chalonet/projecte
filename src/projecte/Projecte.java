@@ -18,11 +18,11 @@ public class Projecte {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Scanner entrada = new Scanner(System.in);
+        Scanner ent = new Scanner(System.in);
         int pes = 0;
         double mida = 0, salari = 0;
         String nom = null, nacionalitat = null, equip = null;
-        boolean titular = false, omplert =false;
+        boolean titular = false, omplert = false;
 
         //Variable del menú
         int opcio;
@@ -40,11 +40,31 @@ public class Projecte {
             System.out.println(" 3.Modificar jugador");
 
             System.out.println(" 4.Llistar jugadors");
-   
+            
+            System.out.println("----------------------------------------");
 
-            switch (opcio = entrada.nextInt()) {
+            switch (opcio = ent.nextInt()) {
 
                 case 1:
+                    if (!omplert) { //omplert = false
+                        System.out.println("Introdueix el nom del jugador");
+                        nom = ent.next();
+                        System.out.println("Introdueix la nacionalitat");
+                        nacionalitat = ent.next();
+                        System.out.println("Introdueix l'equip");
+                        equip = ent.next();
+                        System.out.println("Introdueix el pes");
+                        pes = ent.nextInt();
+                        System.out.println("Introdueix la mida");
+                        mida = ent.nextDouble();
+                        System.out.println("Introdueix el salari");
+                        salari = ent.nextDouble();
+                        System.out.println("Digues si es titular o no.");
+                        titular = ent.nextBoolean();
+                        omplert = true;
+                    } else {
+                        System.out.println("Ja has introduït totes les dades.");
+                    }
 
                     break;
 
@@ -70,6 +90,3 @@ public class Projecte {
 
     }
 }
-    
-    
-
