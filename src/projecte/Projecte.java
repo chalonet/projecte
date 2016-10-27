@@ -22,7 +22,7 @@ public class Projecte {
         int pes = 0;
         double mida = 0, salari = 0;
         String nom = null, nacionalitat = null, equip = null;
-        boolean titular = false, omplit =false;
+        boolean titular = false, omplert =false;
 
         //Variable del menú
         int opcio;
