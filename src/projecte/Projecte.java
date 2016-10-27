@@ -55,11 +55,11 @@ public class Projecte {
                         equip = ent.next();
                         System.out.println("Introdueix el pes");
                         pes = ent.nextInt();
-                        System.out.println("Introdueix la mida");
+                        System.out.println("Introdueix l'alçada");
                         mida = ent.nextDouble();
                         System.out.println("Introdueix el salari");
                         salari = ent.nextDouble();
-                        System.out.println("Digues si es titular o no.");
+                        System.out.println("Digues si es titular o no");
                         titular = ent.nextBoolean();
                         omplert = true;
                     } else {
