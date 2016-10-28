@@ -23,6 +23,7 @@ public class Projecte {
         double mida = 0, salari = 0;
         String nom = null, nacionalitat = null, equip = null;
         boolean titular = false, omplert = false;
+        char veure;
 
         //Variable del menú
         int opcio;
@@ -40,7 +41,7 @@ public class Projecte {
             System.out.println(" 3.Modificar jugador");
 
             System.out.println(" 4.Llistar jugadors");
-            
+
             System.out.println("----------------------------------------");
 
             switch (opcio = ent.nextInt()) {
@@ -69,6 +70,63 @@ public class Projecte {
                     break;
 
                 case 2:
+                    if (omplert) {
+                        System.out.println("Vols veure les dades del jugador? S/N");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Nom:" + nom);
+                                    System.out.println("nacionalitat:" + nacionalitat);
+                                    System.out.println("equip:" + equip);
+                                    System.out.println("pes:" + pes);
+                                    System.out.println("alçada:" + mida);
+                                    System.out.println("salari:" + salari);
+                                    System.out.println("titular:" + titular);
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    System.out.println("Vale");
+                                    break;
+                                default:
+                                    System.out.println("L'opcio no es valida");
+                                    System.out.println("Vols veure les dades del jugador? S/N");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N');
+                        System.out.println("Vols borrar les dades? S/N");
+                        veure = ent.next().charAt(0);
+                        switch (veure) {
+                            case 'S':
+                            case 's':
+                                System.out.println("Les dades s'han esborrat");                             
+                                pes = 0;
+                                mida = 0;
+                                salari = 0;
+                                nom = null;
+                                nacionalitat = null;
+                                equip = null;
+                                titular = false;
+                                omplert = false;
+                                veure = 'N';
+                                break;
+                            case 'N':
+                            case 'n':
+                                System.out.println("Les dades no s'han esborrat");
+                                break;
+                            default:
+                                System.out.println("L'opcio no es valida");
+                                System.out.println("Vols borrar les dades? S/N");
+                                veure = ent.next().charAt(0);
+                                break;
+                        }
+
+                    } else {
+                        System.out.println("No hi han dades");
+                    }
 
                     break;
 
@@ -84,9 +142,11 @@ public class Projecte {
 
                     System.out.println("L'operació no és valida");
                     break;
+
             }
 
         } while (opcio != 0);
 
     }
+
 }
