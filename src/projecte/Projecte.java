@@ -16,6 +16,7 @@ public class Projecte {
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("empty-statement")
     public static void main(String[] args) {
         // TODO code application logic here
         Scanner ent = new Scanner(System.in);
@@ -23,7 +24,7 @@ public class Projecte {
         double mida = 0, salari = 0;
         String nom = null, nacionalitat = null, equip = null;
         boolean titular = false, omplert = false;
-        char veure;
+        char veure, titularChar, mostrar;
 
         //Variable del menú
         int opcio;
@@ -60,8 +61,26 @@ public class Projecte {
                         mida = ent.nextDouble();
                         System.out.println("Introdueix el salari");
                         salari = ent.nextDouble();
-                        System.out.println("Digues si es titular o no");
-                        titular = ent.nextBoolean();
+                        System.out.println("Digues si es titular ( S / N )");
+                        titularChar = ent.next().charAt(0);
+                        do {
+                            switch (titularChar) {
+                                case 'S':
+                                case 's':
+                                    titular = true;
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    titular = false;
+                                    break;
+                                default:
+                                    System.out.println(titularChar + " No és una opció valida");
+                                    System.out.println("Digues si es titular ( S / N )");
+                                    titularChar = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (titularChar != 'S' && titularChar != 's' && titularChar != 'N' && titularChar != 'n');
+
                         omplert = true;
                     } else {
                         System.out.println("Ja has introduït totes les dades.");
@@ -84,6 +103,11 @@ public class Projecte {
                                     System.out.println("alçada:" + mida);
                                     System.out.println("salari:" + salari);
                                     System.out.println("titular:" + titular);
+                                    if (titular == true) {
+                                        System.out.println("És titular");
+                                    } else {
+                                        System.out.println("No és titular");
+                                    }
                                     veure = 'N';
                                     break;
                                 case 'N':
@@ -102,7 +126,7 @@ public class Projecte {
                         switch (veure) {
                             case 'S':
                             case 's':
-                                System.out.println("Les dades s'han esborrat");                             
+                                System.out.println("Les dades s'han esborrat");
                                 pes = 0;
                                 mida = 0;
                                 salari = 0;
@@ -131,11 +155,206 @@ public class Projecte {
                     break;
 
                 case 3:
+                    if (omplert == true) {
+                        System.out.println("Vols veure les dades del jugador? S/N");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Nom:" + nom);
+                                    System.out.println("nacionalitat:" + nacionalitat);
+                                    System.out.println("equip:" + equip);
+                                    System.out.println("pes:" + pes);
+                                    System.out.println("alçada:" + mida);
+                                    System.out.println("salari:" + salari);
+                                    System.out.println("titular:" + titular);
+                                    if (titular == true) {
+                                        System.out.println("És titular");
+                                    } else {
+                                        System.out.println("No és titular");
+                                    }
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    System.out.println("Vale");
+                                    break;
+
+                                default:
+                                    System.out.println("L'opcio no es valida");
+                                    System.out.println("Vols veure les dades del jugador? S/N");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar el nom del jugador? ( S / N )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu el nou nom");
+                                    nom = ent.next();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar el nom del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar la nacionalitat del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu la nova nacionalitat");
+                                    nacionalitat = ent.next();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar la nacionalitat del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar l'equip del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu el nou equip");
+                                    equip = ent.next();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar l'equip del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar el pes del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu el nou pes");
+                                    pes = ent.nextInt();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar el pes del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar la mida del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu la nova mida");
+                                    mida = ent.nextDouble();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar la mida del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar el salari del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu el nou salari");
+                                    salari = ent.nextDouble();
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar el salari del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        System.out.println("Vols modificar la titularitat del jugador? ( s / n )");
+                        veure = ent.next().charAt(0);
+                        do {
+                            switch (veure) {
+                                case 'S':
+                                case 's':
+                                    System.out.println("Escriu si es titular o no");
+                                    titularChar = ent.next().charAt(0);
+                                    veure = 'N';
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    break;
+
+                                default:
+                                    System.out.println(veure + "no és valida");
+                                    System.out.println("Vols modificar la titularitat del jugador");
+                                    veure = ent.next().charAt(0);
+                                    break;
+                            }
+                        } while (veure != 'N' && veure != 'n');
+                        veure = ent.next().charAt(0);
+                           break;
+                    } else {
+                        System.out.println("No hi han dades");
+                    }
 
                     break;
 
                 case 4:
-
+                    if (omplert == false) {
+                        System.out.println("No hi han dades");
+                    } else {
+                        System.out.println("Nom:" + nom);
+                        System.out.println("Nacionalitat:" + nacionalitat);
+                        System.out.println("Equip:" + equip);
+                        System.out.println("Pes:" + pes);
+                        System.out.println("Alçada:" + mida);
+                        System.out.println("Salari:" + salari);                        
+                        if (titular == true) {
+                            System.out.println("És titular");
+                        } else {
+                            System.out.println("No és titular");
+                        }
+                    }
                     break;
 
                 default:
