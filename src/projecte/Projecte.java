@@ -12,6 +12,10 @@ import java.util.Scanner;
  * @author alumne
  */
 public class Projecte {
+    // Número màxim de caselles de l'array
+    private static final int MAX_JUGADORS = 2;
+    // Array on guardarem la informació
+    private static Jugador[] array = new Jugador[MAX_JUGADORS];
 
     /**
      * @param args the command line arguments
@@ -20,6 +24,12 @@ public class Projecte {
     public static void main(String[] args) {
         // TODO code application logic here
         Scanner ent = new Scanner(System.in);
+        
+        for (int j = 0; j< array.length; j++) {
+            array[j] = new Jugador();
+            array[j].setOmplert(false);
+        }
+                   
         int pes = 0;
         double mida = 0, salari = 0;
         String nom = null, nacionalitat = null, equip = null;
@@ -27,7 +37,7 @@ public class Projecte {
         char veure, titularChar, mostrar;
 
         //Variable del menú
-        int opcio;
+        int opcio, i;
 
         //Menu de l'aplicació 
         do {
@@ -48,40 +58,40 @@ public class Projecte {
             switch (opcio = ent.nextInt()) {
 
                 case 1:
-                    if (!omplert) { //omplert = false
+                    // Buscar una casella buida al vector
+                    for (i = 0; i < array.length && array[i].isOmplert(); i++);
+                    
+                    if (i != array.length) { //omplert = false
                         System.out.println("Introdueix el nom del jugador");
-                        nom = ent.next();
+                        array[i].setNom(ent.skip("[\n\n]*").nextLine());
                         System.out.println("Introdueix la nacionalitat");
-                        nacionalitat = ent.next();
+                        array[i].setNacionalitat(ent.skip("[\n\n]*").nextLine());
                         System.out.println("Introdueix l'equip");
-                        equip = ent.next();
+                        array[i].setEquip(ent.skip("[\n\n]*").nextLine());
                         System.out.println("Introdueix el pes");
-                        pes = ent.nextInt();
+                        array[i].setPes(ent.skip("[\n\n]*").nextInt());
                         System.out.println("Introdueix l'alçada");
-                        mida = ent.nextDouble();
+                        array[i].setMida(ent.skip("[\n\n]*").nextDouble());
                         System.out.println("Introdueix el salari");
-                        salari = ent.nextDouble();
+                        array[i].setSalari(ent.skip("[\n\n]*").nextDouble());
                         System.out.println("Digues si es titular ( S / N )");
-                        titularChar = ent.next().charAt(0);
+                        array[i].setTitularChar(ent.skip("[\n\n]*").nextLine().toUpperCase().charAt(0));
                         do {
-                            switch (titularChar) {
+                            switch (array[i].getTitularChar()) {
                                 case 'S':
-                                case 's':
-                                    titular = true;
+                                    array[i].setTitular(true);
                                     break;
                                 case 'N':
-                                case 'n':
-                                    titular = false;
+                                    array[i].setTitular(false);
                                     break;
                                 default:
-                                    System.out.println(titularChar + " No és una opció valida");
+                                    System.out.println(array[i].getTitularChar() + " No és una opció valida");
                                     System.out.println("Digues si es titular ( S / N )");
-                                    titularChar = ent.next().charAt(0);
+                                    array[i].setTitularChar(ent.skip("[\n\n]*").nextLine().toUpperCase().charAt(0));
                                     break;
                             }
-                        } while (titularChar != 'S' && titularChar != 's' && titularChar != 'N' && titularChar != 'n');
-
-                        omplert = true;
+                        } while (array[i].getTitularChar() != 'S' && array[i].getTitularChar() != 'N');
+                        array[i].setOmplert(true);
                     } else {
                         System.out.println("Ja has introduït totes les dades.");
                     }
@@ -89,68 +99,92 @@ public class Projecte {
                     break;
 
                 case 2:
-                    if (omplert) {
-                        System.out.println("Vols veure les dades del jugador? S/N");
-                        veure = ent.next().charAt(0);
-                        do {
-                            switch (veure) {
-                                case 'S':
-                                case 's':
-                                    System.out.println("Nom:" + nom);
-                                    System.out.println("nacionalitat:" + nacionalitat);
-                                    System.out.println("equip:" + equip);
-                                    System.out.println("pes:" + pes);
-                                    System.out.println("alçada:" + mida);
-                                    System.out.println("salari:" + salari);
-                                    System.out.println("titular:" + titular);
-                                    if (titular == true) {
-                                        System.out.println("És titular");
-                                    } else {
-                                        System.out.println("No és titular");
-                                    }
-                                    veure = 'N';
-                                    break;
-                                case 'N':
-                                case 'n':
-                                    System.out.println("Vale");
-                                    break;
-                                default:
-                                    System.out.println("L'opcio no es valida");
-                                    System.out.println("Vols veure les dades del jugador? S/N");
-                                    veure = ent.next().charAt(0);
-                                    break;
+                    for (i = 0; i < array.length; i++) {
+                        if (array[i].isOmplert()) {
+                            System.out.println(array[i]);
+                            if (array[i].isTitular()) {
+                                System.out.println("Es titular");
+                            } else {
+                                System.out.println("No és titular");
                             }
-                        } while (veure != 'N');
-                        System.out.println("Vols borrar les dades? S/N");
-                        veure = ent.next().charAt(0);
-                        switch (veure) {
-                            case 'S':
-                            case 's':
-                                System.out.println("Les dades s'han esborrat");
-                                pes = 0;
-                                mida = 0;
-                                salari = 0;
-                                nom = null;
-                                nacionalitat = null;
-                                equip = null;
-                                titular = false;
-                                omplert = false;
-                                veure = 'N';
-                                break;
-                            case 'N':
-                            case 'n':
-                                System.out.println("Les dades no s'han esborrat");
-                                break;
-                            default:
-                                System.out.println("L'opcio no es valida");
+                            
+                            do {
+                                System.out.println("\nVols borrar les dades? S/N");
+                                veure = ent.skip("[\n\n]*").nextLine().toUpperCase().charAt(0);
+                            } while (veure != 'S' && veure != 'N');
+                            if (veure == 'S') {
+                                array[i].setOmplert(false);
                                 System.out.println("Vols borrar les dades? S/N");
-                                veure = ent.next().charAt(0);
-                                break;
+                            }
+                        } else {
+                            if (i == (array.length - 1)) {
+                                System.out.println("No hi han dades");
+                            }
                         }
-
-                    } else {
-                        System.out.println("No hi han dades");
                     }
+                        
+//                    if (omplert) {
+//                        System.out.println("Vols veure les dades del jugador? S/N");
+//                        veure = ent.next().charAt(0);
+//                        do {
+//                            switch (veure) {
+//                                case 'S':
+//                                case 's':
+//                                    System.out.println("Nom:" + nom);
+//                                    System.out.println("nacionalitat:" + nacionalitat);
+//                                    System.out.println("equip:" + equip);
+//                                    System.out.println("pes:" + pes);
+//                                    System.out.println("alçada:" + mida);
+//                                    System.out.println("salari:" + salari);
+//                                    System.out.println("titular:" + titular);
+//                                    if (titular == true) {
+//                                        System.out.println("És titular");
+//                                    } else {
+//                                        System.out.println("No és titular");
+//                                    }
+//                                    veure = 'N';
+//                                    break;
+//                                case 'N':
+//                                case 'n':
+//                                    System.out.println("Vale");
+//                                    break;
+//                                default:
+//                                    System.out.println("L'opcio no es valida");
+//                                    System.out.println("Vols veure les dades del jugador? S/N");
+//                                    veure = ent.next().charAt(0);
+//                                    break;
+//                            }
+//                        } while (veure != 'N');
+//                        System.out.println("Vols borrar les dades? S/N");
+//                        veure = ent.next().charAt(0);
+//                        switch (veure) {
+//                            case 'S':
+//                            case 's':
+//                                System.out.println("Les dades s'han esborrat");
+//                                pes = 0;
+//                                mida = 0;
+//                                salari = 0;
+//                                nom = null;
+//                                nacionalitat = null;
+//                                equip = null;
+//                                titular = false;
+//                                omplert = false;
+//                                veure = 'N';
+//                                break;
+//                            case 'N':
+//                            case 'n':
+//                                System.out.println("Les dades no s'han esborrat");
+//                                break;
+//                            default:
+//                                System.out.println("L'opcio no es valida");
+//                                System.out.println("Vols borrar les dades? S/N");
+//                                veure = ent.next().charAt(0);
+//                                break;
+//                        }
+//
+//                    } else {
+//                        System.out.println("No hi han dades");
+//                    }
 
                     break;
 
