@@ -8,7 +8,11 @@ package projecte;
 /**
  *
  * @author alumne
+ * 
+ * 
  */
+
+
 public class Jugador {
         private int pes = 0;
         private double mida = 0;
