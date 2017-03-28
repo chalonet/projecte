@@ -5,6 +5,14 @@
  */
 package projecte;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 /**
@@ -14,16 +22,17 @@ import java.util.Scanner;
 public class Projecte {
 
     // Número màxim de caselles de l'array
-    private static final int MAX_JUGADORS = 2;
+    private static final int MAX_JUGADORS = 200;
     // Array on guardarem la informació
     private static Jugador[] array = new Jugador[MAX_JUGADORS];
 
     private static int opcio, i;
-
+    //Fitxer usat per persistir la informació
+    static File f = new File("jugador.db");
     /**
      * @param args the command line arguments
      */
-    @SuppressWarnings("empty-statement")
+    
     public static void main(String[] args) {
 
         inicialitzarVariables();
@@ -53,11 +62,13 @@ public class Projecte {
         System.out.println("3. Modificar jugador.");
         System.out.println("4. Llistar jugador.");
         System.out.println("----------------------------------------");
-
-        opcio = ent.skip("[\r\n]*").nextInt();
-
+        try {
+                opcio = Integer.parseInt(ent.nextLine());
+            } catch (java.lang.NumberFormatException e) {
+                opcio = -1;
+            }
     }
-
+    
     public static void tractarOpcio() {
 
         switch (opcio) {
@@ -99,7 +110,12 @@ public class Projecte {
             System.out.println("Introdueix l'equip");
             array[i].setEquip(ent.skip("[\n\n]*").nextLine());
             System.out.println("Introdueix el pes");
-            array[i].setPes(ent.skip("[\n\n]*").nextInt());
+            try{
+                array[i].setPes(ent.skip("[\n\n]*").nextInt());
+            }catch(java.util.InputMismatchException e){
+                System.out.println("Te que ser un enter.");
+            }
+            
             System.out.println("Introdueix l'alçada");
             array[i].setMida(ent.skip("[\n\n]*").nextDouble());
             System.out.println("Introdueix el salari");
@@ -145,8 +161,7 @@ public class Projecte {
 
                 do {
                     System.out.println("\nVols borrar les dades? S/N");
-                    veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0); //usem toUpperCase() que traduix el text introduït per l'usuari a majúscules, 
-                    //per tant només haurem de tractar les lletres majúscules
+                    veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0); 
                 } while (veure != 'S' && veure != 'N' && veure != 'F');
             }
             if (veure == 'S') {
@@ -257,7 +272,7 @@ public class Projecte {
                     System.out.println("És titular? ( s / n )");
                     esHome = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
                 } while (esHome != 'H' && esHome != 'D');
-                array[i].setTitular(esHome == 'H');     //si esHome conté la 'H' home serà true i sinó false. Fa el mateix que un if_else però és molt més curt
+                array[i].setTitular(esHome == 'H');    
                 System.out.print("Titular: ");
                 if (array[i].isTitular()) {
                     System.out.println("titular");
