@@ -29,10 +29,11 @@ public class Projecte {
     private static int opcio, i;
     //Fitxer usat per persistir la informació
     static File f = new File("jugador.db");
+
     /**
      * @param args the command line arguments
      */
-    
+
     public static void main(String[] args) {
 
         inicialitzarVariables();
@@ -51,24 +52,29 @@ public class Projecte {
             array[i].setOmplert(false);
         }
     }
+
     //Menu de l'aplicació 
     public static void demanarOpcio() {
         Scanner ent = new Scanner(System.in);
-
-        System.out.println("-------- Menú jugadors de futbol--------");
-        System.out.println("0. Sortir.");
-        System.out.println("1. Introduïr jugador.");
-        System.out.println("2. Borrar jugador.");
-        System.out.println("3. Modificar jugador.");
-        System.out.println("4. Llistar jugador.");
-        System.out.println("----------------------------------------");
-        try {
-                opcio = Integer.parseInt(ent.nextLine());
-            } catch (java.lang.NumberFormatException e) {
-                opcio = -1;
+        do {
+            System.out.println("-------- Menú jugadors de futbol--------");
+            System.out.println("0. Sortir.");
+            System.out.println("1. Introduïr jugador.");
+            System.out.println("2. Borrar jugador.");
+            System.out.println("3. Modificar jugador.");
+            System.out.println("4. Llistar jugador.");
+            System.out.println("----------------------------------------");
+            try {
+                opcio = ent.nextInt();
+                break;
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Opcio incorrecta!!");
+                ent.next();
+                continue;
             }
+        } while (true);
     }
-    
+
     public static void tractarOpcio() {
 
         switch (opcio) {
@@ -104,24 +110,46 @@ public class Projecte {
 
         if (i != array.length) { //omplert = false
             System.out.println("Introdueix el nom del jugador");
-            array[i].setNom(ent.skip("[\n\n]*").nextLine());
+            array[i].setNom(ent.skip("[\r\n]*").nextLine());
             System.out.println("Introdueix la nacionalitat");
-            array[i].setNacionalitat(ent.skip("[\n\n]*").nextLine());
+            array[i].setNacionalitat(ent.skip("[\r\n]*").nextLine());
             System.out.println("Introdueix l'equip");
-            array[i].setEquip(ent.skip("[\n\n]*").nextLine());
-            System.out.println("Introdueix el pes");
-            try{
-                array[i].setPes(ent.skip("[\n\n]*").nextInt());
-            }catch(java.util.InputMismatchException e){
-                System.out.println("Te que ser un enter.");
-            }
-            
-            System.out.println("Introdueix l'alçada");
-            array[i].setMida(ent.skip("[\n\n]*").nextDouble());
-            System.out.println("Introdueix el salari");
-            array[i].setSalari(ent.skip("[\n\n]*").nextDouble());
+            array[i].setEquip(ent.skip("[\r\n]*").nextLine());
+
+            do {
+                System.out.println("Introdueix el pes");
+                try {
+                    array[i].setPes(Integer.valueOf(ent.skip("[\r\n]*").nextLine()));
+                } catch (java.lang.NumberFormatException e) {
+                    System.out.println("Te que ser un numero enter.");
+                    array[i].setPes(-1);
+                }
+            } while (array[i].getPes() < 0);
+
+            do {
+                System.out.println("Introdueix l'alçada");
+                try {
+                    array[i].setMida(Double.valueOf(ent.skip("[\r\n]*").nextLine()));
+                } catch (java.lang.NumberFormatException e) {
+                    System.out.println("Te que ser  un numero enter.");
+                    array[i].setMida(-1);
+                }
+
+            } while (array[i].getMida() < 0);
+
+            do {
+                System.out.println("Introdueix Salari");
+                try {
+                    array[i].setSalari(Double.valueOf(ent.skip("[\r\n]*").nextLine()));
+                } catch (java.lang.NumberFormatException e) {
+                    System.out.println("Te que ser  un numero enter.");
+                    array[i].setSalari(-1);
+                }
+
+            } while (array[i].getSalari() < 0);
+
             System.out.println("Digues si es titular ( S / N )");
-            array[i].setTitularChar(ent.skip("[\n\n]*").nextLine().toUpperCase().charAt(0));
+            array[i].setTitularChar(ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0));
             do {
                 switch (array[i].getTitularChar()) {
                     case 'S':
@@ -133,7 +161,7 @@ public class Projecte {
                     default:
                         System.out.println(array[i].getTitularChar() + " No és una opció valida");
                         System.out.println("Digues si es titular ( S / N )");
-                        array[i].setTitularChar(ent.skip("[\n\n]*").nextLine().toUpperCase().charAt(0));
+                        array[i].setTitularChar(ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0));
                         break;
                 }
             } while (array[i].getTitularChar() != 'S' && array[i].getTitularChar() != 'N');
@@ -141,8 +169,7 @@ public class Projecte {
         } else {
             System.out.println("Ja has introduït totes les dades.");
         }
-
-    }           
+    }
 
     public static void borrarJugador() {
         Jugador p = null;
@@ -161,7 +188,7 @@ public class Projecte {
 
                 do {
                     System.out.println("\nVols borrar les dades? S/N");
-                    veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0); 
+                    veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
                 } while (veure != 'S' && veure != 'N' && veure != 'F');
             }
             if (veure == 'S') {
@@ -178,6 +205,7 @@ public class Projecte {
         }
     }
 //                    
+
     public static void modificarJugador() {
 
         Scanner ent = new Scanner(System.in);
@@ -233,8 +261,15 @@ public class Projecte {
                 veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
             } while (veure != 'S' && veure != 'N');
             if (veure == 'S') {
-                System.out.print("Nou pes: ");
-                array[i].setPes(ent.skip("[\r\n]*").nextInt());
+                do {
+                    System.out.println("Nou pes:");
+                    try {
+                        array[i].setPes(Integer.valueOf(ent.skip("[\r\n]*").nextLine()));
+                    } catch (java.lang.NumberFormatException e) {
+                        System.out.println("Te que ser un numero enter.");
+                        array[i].setPes(-1);
+                    }
+                } while (array[i].getPes() < 0);
             }
 
             System.out.println("\nMida: " + array[i].getMida());
@@ -243,20 +278,32 @@ public class Projecte {
                 veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
             } while (veure != 'S' && veure != 'N');
             if (veure == 'S') {
-                System.out.print("Nova mida: ");
-                array[i].setMida(ent.skip("[\r\n]*").nextDouble());
+                do {
+                    System.out.println("Nova mida:");
+                    try {
+                        array[i].setMida(Double.valueOf(ent.skip("[\r\n]*").nextLine()));
+                    } catch (java.lang.NumberFormatException e) {
+                        System.out.println("Te que ser  un numero enter.");
+                        array[i].setMida(-1);
+                    }
+                } while (array[i].getMida() < 0);
             }
-
             System.out.println("\nSalari: " + array[i].getSalari());
             do {
                 System.out.println("\nVols modificar el salari?(S/N):");
                 veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
             } while (veure != 'S' && veure != 'N');
             if (veure == 'S') {
-                System.out.print("Nou salari: ");
-                array[i].setSalari(ent.skip("[\r\n]*").nextDouble());
+                do {
+                    System.out.println("Nou salari:");
+                    try {
+                        array[i].setSalari(Double.valueOf(ent.skip("[\r\n]*").nextLine()));
+                    } catch (java.lang.NumberFormatException e) {
+                        System.out.println("Te que ser  un numero enter.");
+                        array[i].setSalari(-1);
+                    }
+                } while (array[i].getSalari() < 0);
             }
-
             if (array[i].isTitular()) {
                 System.out.println("\nÉs titular");
             } else {
@@ -272,7 +319,7 @@ public class Projecte {
                     System.out.println("És titular? ( s / n )");
                     esHome = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
                 } while (esHome != 'H' && esHome != 'D');
-                array[i].setTitular(esHome == 'H');    
+                array[i].setTitular(esHome == 'H');
                 System.out.print("Titular: ");
                 if (array[i].isTitular()) {
                     System.out.println("titular");
@@ -280,7 +327,6 @@ public class Projecte {
                     System.out.println("No titular");
                 }
             }
-
             System.out.println("Jugador modificat correctament.");
 
         } else {
