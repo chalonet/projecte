@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
@@ -22,17 +23,20 @@ import java.util.Scanner;
 public class Projecte {
 
     // Número màxim de caselles de l'array
-    private static final int MAX_JUGADORS = 200;
+    public static final int MAX_JUGADORS = 5;
     // Array on guardarem la informació
     private static Jugador[] array = new Jugador[MAX_JUGADORS];
 
     private static int opcio, i;
     //Fitxer usat per persistir la informació
-    static File f = new File("jugador.db");
+    static File f = new File("jugadors.db");
 
     /**
      * @param args the command line arguments
      */
+    public static Jugador[] getArray() {
+        return array;
+    }
 
     public static void main(String[] args) {
 
@@ -44,14 +48,58 @@ public class Projecte {
 
     }
 
-    public static void inicialitzarVariables() {
+    public static int inicialitzarVariables() {
+        Jugador p= null;
+        int i=0;
+        
+        if(f.exists()){
+            
+            boolean acabar=false;
+            
 
-        //Inicialitzem l'array en nous pilots sense dades
-        for (int i = 0; i < array.length; i++) {
+            ObjectInputStream lectura=null;
+            try{
+                lectura=new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
+                
+                while(true){
+                    array[i]=(Jugador) lectura.readObject();
+                    i++;
+                }
+            } catch (ArrayIndexOutOfBoundsException ex) {
+               
+                System.err.println("Atenció, no caben tots els objectes. Si continues pots perdre dades. Vols continuar?(S/N):");
+                Scanner ent = new Scanner(System.in);
+                char siNo=' ';
+                do {                    
+                    siNo = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0); 
+                    
+                } while (siNo != 'S' && siNo != 'N');
+                if(siNo=='N') acabar=true;
+                
+            } catch (IOException ex) {
+                
+            } catch (ClassNotFoundException ex) {
+                
+            }finally{
+                try {
+                    
+                    if(lectura!=null) lectura.close();
+                } catch (IOException ex) {
+                    
+                }
+               
+                if(acabar) System.exit(0);
+            }
+        
+        }
+        int resultat = i;
+        for (; i < array.length; i++) {
             array[i] = new Jugador();
             array[i].setOmplert(false);
         }
+        return resultat;
     }
+
 
     //Menu de l'aplicació 
     public static void demanarOpcio() {
@@ -79,7 +127,7 @@ public class Projecte {
 
         switch (opcio) {
             case 0:
-                System.out.println("Adéu!!");
+                finalitzar();
                 break;
             case 1:
                 introduirJugador();
@@ -101,6 +149,25 @@ public class Projecte {
 
     public static boolean opcioFinal() {
         return opcio == 0;
+    }
+    public static void finalitzar(){
+      
+        ObjectOutputStream escriptura=null;
+        try{
+            escriptura=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
+
+            for(int i=0;i<array.length;i++){
+                if(array[i].isOmplert())escriptura.writeObject(array[i]);
+            }
+        } catch (IOException ex) {
+            System.err.println("Error en guardar les dades!!");
+        } finally{
+            try {
+                if(escriptura!=null) escriptura.close();
+            } catch (IOException ex) {
+            }
+        }
+        System.out.println("Adéu!!");
     }
 
     public static void introduirJugador() {
@@ -198,10 +265,10 @@ public class Projecte {
 
         if (veure == 'S') {
             p.setOmplert(false);
-            System.out.println("Pilot borrat correctament.");
+            System.out.println("Jugador borrat correctament.");
 
         } else {
-            System.out.println("\nNo s'ha borrat cap pilot.");
+            System.out.println("\nNo s'ha borrat cap jugador.");
         }
     }
 //                    
@@ -213,10 +280,10 @@ public class Projecte {
         int cont = 1;
         for (i = 0; i < array.length && veure != 'F'; i++) {
             if (array[i].isOmplert()) {
-                System.out.format("\nPilot %d:\n", cont++);
+                System.out.format("\nJugador %d:\n", cont++);
                 System.out.println(array[i].toString());
                 do {
-                    System.out.println("\nVols modificar el pilot(S/N) o finalitzar la cerca (F)?:");
+                    System.out.println("\nVols modificar el jugador(S/N) o finalitzar la cerca (F)?:");
                     veure = ent.skip("[\r\n]*").nextLine().toUpperCase().charAt(0);
                 } while (veure != 'S' && veure != 'N' && veure != 'F');
             }

@@ -5,15 +5,15 @@
  */
 package projecte;
 
+import java.io.Serializable;
+
 /**
  *
  * @author alumne
  * 
  * 
  */
-
-
-public class Jugador {
+public class Jugador implements Serializable {
         private int pes = 0;
         private double mida = 0;
         private double salari = 0;
